@@ -4177,6 +4177,8 @@ in
 
   netmask = callPackage ../tools/networking/netmask {};
 
+  netbox = callPackage ../applications/office/netbox { };
+
   ipscan = callPackage ../tools/security/ipscan { };
 
   ipv6calc = callPackage ../tools/networking/ipv6calc {};
