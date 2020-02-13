@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgconfig, libevent, openssl, zlib, torsocks
+{ stdenv, fetchurl, autoreconfHook, pkgconfig, libevent, openssl, zlib, torsocks
 , libseccomp, systemd, libcap, lzma, zstd, scrypt
 
 # for update.nix
@@ -15,16 +15,16 @@
 
 stdenv.mkDerivation rec {
   pname = "tor";
-  version = "0.4.2.7";
+  version = "0.4.3.5";
 
   src = fetchurl {
     url = "https://dist.torproject.org/${pname}-${version}.tar.gz";
-    sha256 = "0v82ngwwmmcb7i9563bgsmrjy6xp83xyhqhaljygd0pkvlsxi886";
+    sha256 = "0s6qspi102drn1nk3gfxs51x992xarc44gkfsi8y3l48wr50wsk1";
   };
 
   outputs = [ "out" "geoip" ];
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ autoreconfHook pkgconfig ];
   buildInputs = [ libevent openssl zlib lzma zstd scrypt ] ++
     stdenv.lib.optionals stdenv.isLinux [ libseccomp systemd libcap ];
 
