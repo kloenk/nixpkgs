@@ -15,7 +15,9 @@ buildPythonApplication rec {
     sha256 = "0v2rrc7y6blxvsxg04yqn81sjwymi09wwm7mdgmh53zc0ryh9zv6";
   };
 
-  buildInputs = [ setuptools setproctitle stem future pyyaml cryptography pycrypto ];
+  buildInputs = [ ];
+
+  propagatedBuildInputs = [ setuptools setproctitle stem pyyaml cryptography pycrypto future ];
 
   checkInputs = [ pexpect mock pytest pytest-mock tox ];
 
