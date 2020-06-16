@@ -24,7 +24,7 @@ in {
           }];
         };
         description = ''
-          Config file for onionbalance <xlink:href="https://onionbalance.readthedocs.io/en/latest">https://onionbalance.readthedocs.io/en/latest</link>.'';
+          Config file for onionbalance https://onionbalance.readthedocs.io/en/latest.'';
       };
 
       verbosity = mkOption {
