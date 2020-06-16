@@ -9,7 +9,7 @@ in {
     services.onionbalance = {
       enable = mkEnableOption "Onionbalance load balancer";
 
-      settings = {
+      settings = mkOption {
         type = types.attrs;
         default = { };
         example = {
@@ -34,7 +34,7 @@ in {
       };
 
       tor.controlPort = mkOption {
-        type = types.port;
+        type = types.nullOr (types.either types.int types.str);
         default = config.services.tor.controlPort;
         description = "Tor controller port";
       };
