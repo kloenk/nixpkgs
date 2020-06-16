@@ -52,7 +52,7 @@ in {
 
       serviceConfig = {
         User = "onionbalance";
-        Group = "onionbalance";
+        Group = "tor";
       };
 
       script = let
