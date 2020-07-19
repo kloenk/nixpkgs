@@ -17239,6 +17239,9 @@ in
       python = python3;
     };
 
+    #procmon = if stdenv.lib.versionOlder kernel.version "4.18" then callPackage ../os-specific/linux/procmon { } else null;
+    procmon = callPackage ../os-specific/linux/procmon { };
+
     bpftrace = callPackage ../os-specific/linux/bpftrace { };
 
     bbswitch = callPackage ../os-specific/linux/bbswitch {};
