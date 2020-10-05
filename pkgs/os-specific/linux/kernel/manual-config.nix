@@ -1,5 +1,5 @@
 { buildPackages, runCommand, nettools, bc, bison, flex, perl, rsync, gmp, libmpc, mpfr, openssl
-, libelf, cpio, elfutils
+, libelf, cpio, elfutils, clang_11, llvm_11, rustc, cargo
 , writeTextFile
 }:
 
@@ -43,6 +43,29 @@ in {
 let
   inherit (stdenv.lib)
     hasAttr getAttr optional optionals optionalString optionalAttrs maintainers platforms;
+
+  rustc-nightly = rustc.overrideAttrs (oldAttrs: {
+    configureFlags = map (flag:
+      if
+        flag == "--release-channel=stable"
+      then
+        "--release-channel=nightly"
+      else
+        flag
+      ) oldAttrs.configureFlags;
+  });
+  cargo-nightly = cargo; /*cargo.overrideAttrs (oldAttrs: {
+    configureFlags = map (flag:
+      if
+        flag == "--release-channel=stable"
+      then
+        "--release-channel=nightly"
+      else
+        flag
+      ) oldAttrs.configureFlags;
+  });*/
+
+
 
   # Dependencies that are required to build kernel modules
   moduleBuildDependencies = optional (stdenv.lib.versionAtLeast version "4.14") libelf;
@@ -296,6 +319,7 @@ stdenv.mkDerivation ((drvAttrs config stdenv.hostPlatform.platform kernelPatches
       ++ optionals (stdenv.lib.versionAtLeast version "4.16") [ bison flex ]
       ++ optional  (stdenv.lib.versionAtLeast version "5.2")  cpio
       ++ optional  (stdenv.lib.versionAtLeast version "5.8")  elfutils
+      ++ optionals (stdenv.lib.versionAtLeast version "5.9")  [ clang_11 llvm_11 rustc-nightly cargo-nightly ]
       ;
 
   hardeningDisable = [ "bindnow" "format" "fortify" "stackprotector" "pic" "pie" ];
