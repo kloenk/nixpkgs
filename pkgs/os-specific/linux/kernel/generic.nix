@@ -20,6 +20,10 @@
 , # Legacy overrides to the intermediate kernel config, as string
   extraConfig ? ""
 
+, # Extra Build Inputs
+  extraBuildInputs ? []
+, extraNativeBuildInputs ? []
+
 , # kernel intermediate config overrides, as a set
  structuredExtraConfig ? {}
 
@@ -168,7 +172,7 @@ let
   }; # end of configfile derivation
 
   kernel = (callPackage ./manual-config.nix {}) {
-    inherit version modDirVersion src kernelPatches randstructSeed stdenv extraMeta configfile;
+    inherit version modDirVersion src kernelPatches randstructSeed stdenv extraMeta configfile extraBuildInputs extraNativeBuildInputs;
 
     config = { CONFIG_MODULES = "y"; CONFIG_FW_LOADER = "m"; };
   };
