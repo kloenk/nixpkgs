@@ -112,6 +112,7 @@ let
 
     depsBuildBuild = [ buildPackages.stdenv.cc ];
     nativeBuildInputs = [ perl gmp libmpc mpfr ]
+      ++ extraNativeBuildInputs
       ++ lib.optionals (stdenv.lib.versionAtLeast version "4.16") [ bison flex ];
 
     platformName = stdenv.hostPlatform.platform.name;
@@ -142,7 +143,7 @@ let
       # Create the config file.
       echo "generating kernel configuration..."
       ln -s "$kernelConfigPath" "$buildRoot/kernel-config"
-      DEBUG=1 ARCH=$kernelArch KERNEL_CONFIG="$buildRoot/kernel-config" AUTO_MODULES=$autoModules \
+      DEBUG=1 ARCH=$kernelArch KERNEL_CONFIG="$buildRoot/kernel-config" AUTO_MODULES=$autoModules HAS_RUST=y  \
            PREFER_BUILTIN=$preferBuiltin BUILD_ROOT="$buildRoot" SRC=. perl -w $generateConfig
     '';
 
@@ -179,7 +180,7 @@ let
 
   passthru = {
     features = kernelFeatures;
-    inherit commonStructuredConfig;
+    inherit commonStructuredConfig configfile;
     passthru = kernel.passthru // (removeAttrs passthru [ "passthru" ]);
   };
 

@@ -126,7 +126,7 @@ let
         runHook preConfigure
 
         mkdir build
-        export buildRoot="$(pwd)/build"
+  
 
         echo "manual-config configurePhase buildRoot=$buildRoot pwd=$PWD"
 
