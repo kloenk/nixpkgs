@@ -4013,6 +4013,7 @@ in {
 
   lxml = callPackage ../development/python-modules/lxml {
     inherit (pkgs) libxml2 libxslt zlib;
+    inherit (pkgs.darwin.apple_sdk) MacOSX-SDK;
   };
 
   lyricwikia = callPackage ../development/python-modules/lyricwikia { };

@@ -3,6 +3,9 @@
 , libxml2
 , libxslt
 , zlib
+, MacOSX-SDK
+, gnused
+, stdenv
 }:
 
 buildPythonPackage rec {
@@ -15,6 +18,11 @@ buildPythonPackage rec {
     rev = "${pname}-${version}";
     sha256 = "1zidx62sxh2r4fmjfjzd4f6i4yxgzkpd20nafbyr0i0wnw9da3fd";
   };
+
+  patchPhase = if stdenv.isDarwin then ''
+    echo "preConfigure"
+    ${gnused}/bin/sed -i "s+return run_command('xcrun', '--show-sdk-path')+return '${MacOSX-SDK}'+g" setupinfo.py
+  '' else "";
 
   # setuptoolsBuildPhase needs dependencies to be passed through nativeBuildInputs
   nativeBuildInputs = [ libxml2.dev libxslt.dev cython ];
