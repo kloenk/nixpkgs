@@ -18,5 +18,6 @@ import ./make-test-python.nix ({ pkgs, lib, ... }: {
     start_all()
     machine.wait_for_unit("phpfpm-moodle.service")
     machine.wait_until_succeeds("curl http://localhost/ | grep 'You are not logged in'")
+    machine.wait_until_succeeds("curl 'http://localhost/login/token.php?username=root@example.com&password=correcthorsebatterystaple&service=moodle_mobile_app' | grep 'token'")
   '';
 })
