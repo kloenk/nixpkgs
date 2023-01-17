@@ -27,6 +27,27 @@ rec {
     };
   };
 
+  openkiosk = buildMozillaMach rec {
+    pname = "openkiosk";
+    version = "91.0";
+    src = fetchurl {
+      url = "https://www.mozdevgroup.com/dropbox/okcd/91.0/src/openkiosk91-latest-src.tar.bz2";
+      hash = "sha256-DxCzOpIS9GSpdOyNGDlmxBS5xaeGEi6fHl7npGjVbXY=";
+    };
+    meta = {
+      changelog = "https://www.mozilla.org/en-US/firefox/${version}/releasenotes/";
+      description = "A web browser built from Firefox source tree";
+      homepage = "http://www.mozilla.com/en-US/firefox/";
+      maintainers = with lib.maintainers; [ lovesegfault hexa ];
+      platforms = lib.platforms.unix;
+      badPlatforms = lib.platforms.darwin;
+      broken = stdenv.buildPlatform.is32bit; # since Firefox 60, build on 32-bit platforms fails with "out of memory".
+                                             # not in `badPlatforms` because cross-compilation on 64-bit machine might work.
+      maxSilent = 14400; # 4h, double the default of 7200s (c.f. #129212, #129115)
+      license = lib.licenses.mpl20;
+    };
+  };
+
   firefox-esr-102 = buildMozillaMach rec {
     pname = "firefox-esr-102";
     version = "102.7.0esr";
