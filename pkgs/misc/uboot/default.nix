@@ -446,6 +446,12 @@ in {
     filesToInstall = [ "u-boot.rom" ];
   };
 
+  ubootEfiPaylpadX86_64 = buildUBoot {
+    defconfig = "efi-x86_payload64_defconfig";
+    extraMeta.platforms = [ "x86_64-linux" ];
+    filesToInstall = [ "u-boot-payload.efi" ];
+  };
+
   ubootRaspberryPi = buildUBoot {
     defconfig = "rpi_defconfig";
     extraMeta.platforms = ["armv6l-linux"];
