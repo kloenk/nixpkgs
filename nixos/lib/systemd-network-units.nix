@@ -190,10 +190,10 @@ in {
     '' + optionalString (def.bfifoConfig != { }) ''
       [BFIFO]
       ${attrsToSection def.bfifoConfig}
-    '' + optionalString (def.pfifoConfig != { }) ''
+    '' + flip concatMapStrings def.pfifoConfig (x: ''
       [PFIFO]
-      ${attrsToSection def.pfifoConfig}
-    '' + optionalString (def.pfifoHeadDropConfig != { }) ''
+      ${attrsToSection x.pfifoConfig}
+    '') + optionalString (def.pfifoHeadDropConfig != { }) ''
       [PFIFOHeadDrop]
       ${attrsToSection def.pfifoHeadDropConfig}
     '' + optionalString (def.pfifoFastConfig != { }) ''
@@ -229,10 +229,10 @@ in {
     '' + optionalString (def.hierarchyTokenBucketConfig != { }) ''
       [HierarchyTokenBucket]
       ${attrsToSection def.hierarchyTokenBucketConfig}
-    '' + optionalString (def.hierarchyTokenBucketClassConfig != { }) ''
+    '' + flip concatMapStrings def.hierarchyTokenBucketClassConfig (x: ''
       [HierarchyTokenBucketClass]
-      ${attrsToSection def.hierarchyTokenBucketClassConfig}
-    '' + optionalString (def.heavyHitterFilterConfig != { }) ''
+      ${attrsToSection x.hierarchyTokenBucketClassConfig}
+    '') + optionalString (def.heavyHitterFilterConfig != { }) ''
       [HeavyHitterFilter]
       ${attrsToSection def.heavyHitterFilterConfig}
     '' + optionalString (def.quickFairQueueingConfig != { }) ''

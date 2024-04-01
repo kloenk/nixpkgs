@@ -2010,6 +2010,36 @@ let
     };
   };
 
+  pfifoConfigOptions = {
+    options = {
+      pfifoConfig =   mkOption {
+        default = {};
+        example = { Parent = "root"; PacketLimit= 300; };
+        type = types.addCheck (types.attrsOf unitOption) check.network.sectionPFIFO;
+        description = lib.mdDoc ''
+          Each attribute in this set specifies an option in the
+          `[PFIFO]` section of the unit See
+          {manpage}`systemd.network(5)` for details.
+        '';
+      };
+    };
+  };
+
+  hierarchyTokenBucketClassOptions = {
+    options = {
+      hierarchyTokenBucketClassConfig = mkOption {
+        default = {};
+        example = { Parent = "root"; Rate = "10M"; };
+        type = types.addCheck (types.attrsOf unitOption) check.network.sectionHierarchyTokenBucketClass;
+        description = lib.mdDoc ''
+          Each attribute in this set specifies an option in the
+          `[HierarchyTokenBucketClass]` section of the unit.  See
+          {manpage}`systemd.network(5)` for details.
+        '';
+      };
+    };
+  };
+
   networkOptions = commonNetworkOptions // {
 
     linkConfig = mkOption {
@@ -2302,12 +2332,10 @@ let
     };
 
     pfifoConfig = mkOption {
-      default = {};
-      example = { Parent = "ingress"; PacketLimit = "300"; };
-      type = types.addCheck (types.attrsOf unitOption) check.network.sectionPFIFO;
+      default = [ ];
+      type = with types; listOf (submodule pfifoConfigOptions);
       description = lib.mdDoc ''
-        Each attribute in this set specifies an option in the
-        `[PFIFO]` section of the unit.  See
+        A list of pfifo class sections to be added to the unit. See
         {manpage}`systemd.network(5)` for details.
       '';
     };
@@ -2445,12 +2473,10 @@ let
     };
 
     hierarchyTokenBucketClassConfig = mkOption {
-      default = {};
-      example = { Parent = "root"; Rate = "10M"; };
-      type = types.addCheck (types.attrsOf unitOption) check.network.sectionHierarchyTokenBucketClass;
+      default = [ ];
+      type = with types; listOf (submodule hierarchyTokenBucketClassOptions);
       description = lib.mdDoc ''
-        Each attribute in this set specifies an option in the
-        `[HierarchyTokenBucketClass]` section of the unit.  See
+        A list of htb class sections to be added to the unit. See
         {manpage}`systemd.network(5)` for details.
       '';
     };
